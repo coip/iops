@@ -12,37 +12,23 @@
 const char delimiter = ',';
 const char EoV = '}';
 
-
-
-
-
-
-
 struct Vector {
 	int n; 	//# of columns/width
 	int *v; //a malloc(n*sizeof(int))'d int pointer to the vector
 };
 
 typedef struct {
-	//# of rows/height:
-	int m;
-	//# of columns/width
-	int n;
+	int m; //# of rows/height:
+	int n; //# of columns/width
 	struct Vector *vector;
 } Matrix;
-
-
-
-
-
-
 
 Matrix buildMatrix(char * buf){
 	
 	//#INIT VECTOR:
 	struct Vector row;
-	row.v = malloc(sizeof(int));
 	row.n = 0;
+	row.v = malloc(sizeof(int));
 
 	//#INIT MATRIX:
 	Matrix matrix;
@@ -57,7 +43,7 @@ Matrix buildMatrix(char * buf){
 		if(*buf == delimiter || *buf == EoV){
 			*(row.v+(row.n)) = atoi(token);
 			row.n++;
-			//printf("cstring rep. of #: %s. int %d added. size of row: %d // free(token) && malloc(1)", *token, *(row.v), row.n);
+			printf("cstring rep. of #: %s. int %d added. size of row: %d\n\n", token, *(row.v+row.n-1), row.n);
 			row.v = realloc(row.v, ((row.n+1) * 8)); 
 			free(token);
 			counter = 0;
@@ -66,15 +52,15 @@ Matrix buildMatrix(char * buf){
 		if(*buf == EoV)
 			break;
 		if((48 <= *buf) && (*buf <= 57)){
-				printf("char: \'%c\', int: %d, addr: %u\n", *buf, *buf, buf);
+				printf("char: \'%c\', int: %d, addr: %p\n", *buf, *buf, buf);
 			*(token+counter) = *buf;
 			token = realloc(token, (counter+1));
-			*(token+counter+1) = NULL;
+			*(token+counter+1) = '\0';
 			counter++;
 		}
 		
 	}
-	printf("row.n: %d", row.n);
+	printf("row.n: %d\n", row.n);
 	for(int i = 0; i < row.n; i++)
 		printf("row[%d]: %d\n", i, row.v[i]);
 	return matrix;
@@ -100,7 +86,7 @@ int main(int argc, char* argv[]){
 	char buffer[100];
 	fgets(buffer, 100, (FILE *)matrix);
 
-	printf("\nsizeof(buffer): %d, contents: %s", sizeof(buffer), buffer);
+	printf("\nsizeof(buffer): %lu, contents: %s", sizeof(buffer), buffer);
 	
 	buildMatrix(buffer);
 
