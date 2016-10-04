@@ -12,3 +12,5 @@ tableaus on tableaus
 	-	__parsing in c is fun__
 	-	###Successfully### pulls char-for-char, any ',' & [0-9] for storing in a dynamically allocated char*.
 	-	converting to ints in progress.
+Tue, Oct 04, 2016 12:09:44 AM
+overhauled memory management to be more efficient before the real processing happens, to mitigate waste via allocation and more processing intensive work on the matrices
