@@ -21,8 +21,31 @@ struct Vector {
 typedef struct {
 	int m;			//# of rows/height:
 	int n;			//# of columns/width
-	struct Vector *v;
+	struct Vector **v;	//a pointer to a vector
 } Matrix;
+/*
+
+Matrix m;
+[[1,2,3,4,5],
+ [6,7,8,9,0],
+ [1,3,5,7,9],
+ [2,4,6,8,0]]
+
+m.m == 4;
+m.n == 5;
+m.v == memoryaddr;
+
+*(m)  => struct Vector;
+**(m) => int;
+
+*(m.v)  			== [ 1, 2, 3, 4, 5];
+**(m.v) 			== 1;
+**(m.v+4)			== 2;
+
+*(m.v+sizeof(struct Vector)) 	== [ 6, 7, 8, 9, 0]
+
+
+*/
 
 struct Vector buildVector(char *buffer)
 {				//this takes in input after readline from file.
@@ -40,7 +63,7 @@ struct Vector buildVector(char *buffer)
 			*(row.v + (row.n)) = atoi(token);
 			row.n++;
 			if (debug)
-				printf("cstring rep. of #: %s. int %d added. size of row: %d\n\n", token, *(row.v + row.n - 1), row.n);
+				printf("cstring rep. of #: %s. int %d added. size of row: %d\n", token, *(row.v + row.n - 1), row.n);
 			row.v = realloc(row.v, ((row.n + 1) * 8));
 			free(token);
 			counter = 0;
@@ -59,7 +82,7 @@ struct Vector buildVector(char *buffer)
 
 	}
 
-return row;
+	return row;
 }
 
 Matrix buildMatrix(char *buf)
@@ -70,25 +93,35 @@ Matrix buildMatrix(char *buf)
 	matrix.m = 0;
 	matrix.n = 0;
 	matrix.v = malloc(sizeof(struct Vector *));
-	
+
 	FILE *mfile;
 	mfile = fopen(buf, "r");
 	if (mfile == NULL) {
-		printf("File doesn't exist: %s", buf);
-		fclose(mfile);
+		printf("File doesn't exist: %s\n", buf);
 		return matrix;
 	}
 //static allocation: eww. todo
 	char storage[100];
-	
-while(fgets(storage, 100, (FILE *) mfile)){
-	//INIT TEMP VECTOR
-	struct Vector r;
-	r = buildVector(storage);
-printf("sizeof(vector *) == %lu", sizeof(struct Vector *));
-	matrix.v(matrix.m * 8) = &r;//malloc( (r.n + 1) * sizeof(int) ); //vector elements are n - many, with +1 for the counter itself.
-	matrix.m++;
-}
+
+	while (fgets(storage, 100, (FILE *) mfile)) {
+		//INIT TEMP VECTOR
+		struct Vector r;
+		r = buildVector(storage);
+		int i;
+		printf("printing vector contents for row %d:\n", matrix.m);
+printf("[ ");
+		for (i = 0; i < r.n; i++)
+			printf("%d ", *(r.v+i));
+
+		printf("sizeof(struct Vector **) == %lu;\tsizeof(struct Vector *) == %lu;\tsizeof(struct Vector) == %lu;\tr.n = %d;\tsizeof(int) == %lu\t\t", 
+				sizeof(struct Vector **), 
+				sizeof(struct Vector *), 
+				sizeof(struct Vector), 
+				r.n, 
+				sizeof(int));
+		printf("total mem for Vector %d: %lu\n\n", matrix.m, (sizeof(struct Vector *) + sizeof(struct Vector) + (r.n * sizeof(int))));
+		matrix.m++;
+	}
 	fclose(mfile);
 	return matrix;
 
