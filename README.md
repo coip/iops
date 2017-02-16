@@ -14,3 +14,9 @@ tableaus on tableaus
 	-	converting to ints in progress.
 Tue, Oct 04, 2016 12:09:44 AM
 overhauled memory management to be more efficient before the real processing happens, to mitigate waste via allocation and more processing intensive work on the matrices
+Thu Feb 16 14:22:56 STD 2017
+finished builder.c for v1
+starting github.io page/wiki.
+planning to write out roadmap
+
+build out matrix.c for matrix operations next.
