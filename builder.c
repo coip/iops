@@ -7,26 +7,7 @@
  * */
 #include <stdio.h>
 #include <stdlib.h>
-
-const char delimiter = ',';
-const char EoV = '}';
-
-int d1, d2, d3;
-
-struct Vector
-{
-  int n;			//# of columns/width todo kind of redundant. #onthetable
-  int *v;			//a malloc(n*sizeof(int))'d              int pointer to the vector
-};
-
-typedef struct
-{
-  int m;			//# of rows/height:
-  struct Vector *v;		//a malloc(m*sizeof(struct Vector))'d vector pointer to a vector
-} Matrix;
-
-void setDebug (char *);
-void printMatrix (Matrix);
+#include "builder.h"
 
 struct Vector
 buildVector (char *buffer)
@@ -134,14 +115,17 @@ printMatrix (Matrix m)
 {
 
   int i, j;
-  printf ("[[");
+  printf ("{");
   for (j = 0; j < m.m; j++)
     {
+      printf("[");
       for (i = 0; i < (*(m.v)).n - 1; i++)
 	printf (" %d, ", *((*(m.v + j)).v + i));
-      printf ("%d ]\n [", *((*(m.v + j)).v + (*(m.v + j)).n - 1));
+      printf ("%d ]", *((*(m.v + j)).v + (*(m.v + j)).n - 1));
+	if(!(j+1==m.m))
+		printf("\n");
     }
-  printf ("end]\n");
+  printf ("}\n");
 
 }
 
@@ -163,7 +147,7 @@ setDebug (char *arg)
     }
 }
 
-int
+/*int
 main (int argc, char *argv[])
 {
   if (argc == 3)
@@ -175,4 +159,4 @@ main (int argc, char *argv[])
 
   return 0;
 
-}
+}*/
