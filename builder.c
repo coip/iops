@@ -130,6 +130,10 @@ printMatrix (Matrix m)
 }
 
 void
+printVector(struct Vector * v){
+
+}
+void
 setDebug (char *arg)
 {
 
@@ -152,7 +156,8 @@ main (int argc, char *argv[])
 {
   if (argc == 3)
     setDebug (argv[2]);
-
+delimiter = ',';
+EoV = '}';
   Matrix m = buildMatrix (argv[1]);
 
   printMatrix (m);

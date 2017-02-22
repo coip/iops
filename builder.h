@@ -20,7 +20,8 @@ struct Vector
 
 void setDebug(char*);
 
-Matrix buildMatrix(char *buf);
+Matrix buildMatrix(char *);
+struct Vector buildVector(char *);
 
 void printMatrix(Matrix);
 
