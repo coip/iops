@@ -12,7 +12,6 @@
 struct Vector
 buildVector (char *buffer)
 {				//this takes in input after readline from file.
-
   //#INIT VECTOR:
   struct Vector row;
   row.n = 0;
@@ -31,9 +30,9 @@ buildVector (char *buffer)
 	  row.n++;
 	  if (d2)
 	    printf
-	      ("cstring rep. of #: %s. int %d added.",
+	      ("cstring rep. of #: %s. int %d added.\n",
 	       token, *(row.v + row.n - 1));
-	  row.v = realloc (row.v, ((row.n + 1) * 8));
+	  row.v = realloc (row.v, ((row.n + 1) * 4));
 	  free (token);
 	  counter = 0;
 	  token = malloc (1);
@@ -64,6 +63,9 @@ buildVector (char *buffer)
 
   return row;
 }
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
 Matrix
 buildMatrix (char *buf)
@@ -110,6 +112,9 @@ buildMatrix (char *buf)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
 void
 printMatrix (Matrix m)
 {
@@ -129,10 +134,44 @@ printMatrix (Matrix m)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+struct Vector *
+getVector(Matrix * m, int row){
+	return (*m).v+row;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+int
+getEntry(struct Vector * v, int index)
+{
+return *((*v).v+index);
+}
 void
 printVector(struct Vector * v){
+	int i;
+	putchar('[');//compare to printf
 
+	for(i = 0; i < (*v).n-1; i++)
+		printf("%d, ", *((*v).v+i));
+	printf("%d]", *((*v).v+((*v).n-1)));
 }
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+struct Vector *
+scaleVector(struct Vector * v, int scalar){
+int i;
+for(i = 0; i < (*v).n; i++)
+	*((*v).v+i) *= scalar;
+return v;
+}
+
+
 void
 setDebug (char *arg)
 {
@@ -151,6 +190,32 @@ setDebug (char *arg)
     }
 }
 
+void
+addVal(struct Vector * v, int i){
+	printf("adding %d to v", i);
+	(*v).n++;
+	(*v).v = realloc ((*v).v, (((*v).n + 1) * 4));
+	*((*v).v) = i;
+	printf("done adding %d", i);
+}
+
+struct Vector
+getTCol(Matrix * m, int col){
+
+	printf("get t col\n");
+
+
+  struct Vector v;
+  v.n = 0;
+  v.v = malloc (sizeof (int));
+
+	int i = 0;
+	for(; i < (*m).m; i++){
+		addVal(&v, getEntry(getVector(m,i),col));
+		printf("pushed %d into vector", getEntry(getVector(m,i),col));
+	}
+	return v;
+}
 /*int
 main (int argc, char *argv[])
 {

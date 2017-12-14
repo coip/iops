@@ -23,6 +23,9 @@ void setDebug(char*);
 Matrix buildMatrix(char *);
 struct Vector buildVector(char *);
 
+struct Vector * getVector(Matrix *, int);
+void printVector(struct Vector *);
 void printMatrix(Matrix);
-
+struct Vector * scaleVector(struct Vector *, int);
+struct Vector getTCol(Matrix *, int);
 #endif
